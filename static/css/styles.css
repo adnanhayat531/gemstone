@@ -1,0 +1,116 @@
+:root {
+    --gold: #C9A44C;
+    --gold-dark: #b8923a;
+    --dark-charcoal: #333333;
+    --light-bg: #f8f9fa;
+}
+
+body {
+    font-family: 'Lato', sans-serif;
+    color: var(--dark-charcoal);
+    background-color: #fff;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.navbar-brand {
+    font-family: 'Playfair Display', serif;
+}
+
+.text-gold {
+    color: var(--gold) !important;
+}
+
+.bg-gold {
+    background-color: var(--gold) !important;
+}
+
+.btn-gold {
+    background-color: var(--gold);
+    color: #fff;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.btn-gold:hover {
+    background-color: var(--gold-dark);
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+.btn-outline-gold {
+    color: var(--gold);
+    border: 2px solid var(--gold);
+    transition: all 0.3s ease;
+}
+
+.btn-outline-gold:hover {
+    background-color: var(--gold);
+    color: #fff;
+}
+
+.card-gemstone {
+    border: none;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+}
+
+.card-gemstone:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.card-img-top-wrapper {
+    height: 250px;
+    overflow: hidden;
+    position: relative;
+    background-color: #f1f1f1;
+}
+
+.card-img-top-wrapper img {
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+    transition: transform 0.5s ease;
+}
+
+.card-gemstone:hover .card-img-top-wrapper img {
+    transform: scale(1.1);
+}
+
+.hero-section {
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1599643478518-17488fbbcd75?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+    background-size: cover;
+    background-position: center;
+    color: white;
+    padding: 150px 0;
+    text-align: center;
+}
+
+.trust-section {
+    background-color: var(--light-bg);
+}
+
+.trust-icon {
+    font-size: 2.5rem;
+    color: var(--gold);
+    margin-bottom: 1rem;
+}
+
+/* Pagination */
+.page-link {
+    color: var(--gold);
+}
+
+.page-link:hover {
+    color: var(--gold-dark);
+}
+
+.page-item.active .page-link {
+    background-color: var(--gold);
+    border-color: var(--gold);
+}

@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="bg-light py-5">
+    <div class="container">
+        <h1 class="text-center fw-bold display-4 mb-3">Your Wishlist</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb justify-content-center">
+                <li class="breadcrumb-item"><a href="{% url 'home' %}" class="text-decoration-none text-gold">Home</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Wishlist</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="container py-5">
+    {% if gemstones %}
+    <div class="row">
+        {% for gemstone in gemstones %}
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card card-gemstone h-100 shadow-sm">
+                <div class="card-img-top-wrapper">
+                    {% if gemstone.image %}
+                    <img src="{{ gemstone.image.url }}" class="card-img-top" alt="{{ gemstone.name }}">
+                    {% else %}
+                    <div class="d-flex align-items-center justify-content-center h-100 bg-light text-muted">
+                        No Image
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="card-body text-center">
+                    <h5 class="card-title fw-bold font-serif">{{ gemstone.name }}</h5>
+                    <p class="card-text text-muted mb-1">{{ gemstone.carat }} Carat {{ gemstone.category }}</p>
+                    <h5 class="text-gold fw-bold mb-3">${{ gemstone.price }}</h5>
+                    <div class="d-flex justify-content-center gap-2">
+                        <a href="{% url 'gemstone_detail' gemstone.slug %}"
+                            class="btn btn-outline-gold rounded-pill px-4">View Details</a>
+                        <a href="{% url 'toggle_wishlist' gemstone.id %}" class="btn btn-danger rounded-circle"
+                            title="Remove from Wishlist"><i class="fas fa-trash"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="text-center py-5">
+        <h4 class="text-muted mb-4">Your wishlist is empty.</h4>
+        <a href="{% url 'gemstone_list' %}" class="btn btn-gold rounded-pill px-5">Start Browsing</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

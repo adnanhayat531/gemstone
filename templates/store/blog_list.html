@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="bg-light py-5">
+    <div class="container">
+        <h1 class="text-center fw-bold display-4 mb-3">The Gem Journal</h1>
+        <p class="text-center text-muted lead">Insights, history, and advice from the world of gemstones.</p>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            {% for post in posts %}
+            <div class="card border-0 shadow-sm mb-5 overflow-hidden">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        {% if post.image %}
+                        <img src="{{ post.image.url }}" class="img-fluid h-100 object-fit-cover" alt="{{ post.title }}"
+                            style="min-height: 250px;">
+                        {% else %}
+                        <div class="bg-secondary h-100 d-flex align-items-center justify-content-center text-white p-5">
+                            <i class="far fa-newspaper fa-3x"></i>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body p-4 p-lg-5 d-flex flex-column h-100">
+                            <small class="text-gold text-uppercase letter-spacing-2 mb-2">{{ post.created_at|date:"F j,
+                                Y" }}</small>
+                            <h3 class="card-title fw-bold font-serif mb-3">
+                                <a href="{% url 'blog_detail' post.slug %}" class="text-dark text-decoration-none">{{
+                                    post.title }}</a>
+                            </h3>
+                            <p class="card-text text-muted mb-4">{{ post.content|truncatewords:30 }}</p>
+                            <div class="mt-auto">
+                                <a href="{% url 'blog_detail' post.slug %}"
+                                    class="btn btn-outline-gold rounded-pill px-4">Read Article</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="text-center py-5">
+                <h4 class="text-muted">No articles published yet. Check back soon!</h4>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

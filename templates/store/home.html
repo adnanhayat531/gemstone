@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <h1 class="display-3 fw-bold mb-4">Timeless Elegance, Etched in Stone</h1>
+        <p class="lead mb-5">Discover our exclusive collection of certified, ethically sourced gemstones.</p>
+        <a href="{% url 'gemstone_list' %}" class="btn btn-gold btn-lg rounded-pill px-5 py-3">Explore Collection</a>
+    </div>
+</section>
+
+<!-- Features / Trust Section -->
+<section class="trust-section py-5">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-md-4 mb-4 mb-md-0">
+                <i class="fa fa-certificate trust-icon"></i>
+                <h4 class="fw-bold">Certified Authenticity</h4>
+                <p class="text-muted">Every gemstone comes with a certificate of authenticity from reputable labs.</p>
+            </div>
+            <div class="col-md-4 mb-4 mb-md-0">
+                <i class="fa fa-hand-holding-heart trust-icon"></i>
+                <h4 class="fw-bold">Ethically Sourced</h4>
+                <p class="text-muted">We ensure all our stones are mined and sourced with the highest ethical standards.
+                </p>
+            </div>
+            <div class="col-md-4">
+                <i class="fa fa-shipping-fast trust-icon"></i>
+                <h4 class="fw-bold">Global Shipping</h4>
+                <p class="text-muted">Secure, insured shipping to anywhere in the world.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Collection -->
+<section class="py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold mb-3">Featured Collection</h2>
+            <div class="d-flex justify-content-center">
+                <div style="height: 3px; width: 60px; background-color: var(--gold);"></div>
+            </div>
+        </div>
+
+        <div class="row">
+            {% for gemstone in featured_gemstones %}
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card card-gemstone h-100 shadow-sm">
+                    <div class="card-img-top-wrapper">
+                        {% if gemstone.image %}
+                        <img src="{{ gemstone.image.url }}" class="card-img-top" alt="{{ gemstone.name }}">
+                        {% else %}
+                        <div class="d-flex align-items-center justify-content-center h-100 bg-light text-muted">
+                            No Image
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="card-body text-center">
+                        <h5 class="card-title fw-bold font-serif">{{ gemstone.name }}</h5>
+                        <p class="card-text text-muted mb-1">{{ gemstone.carat }} Carat {{ gemstone.category }}</p>
+                        <h5 class="text-gold fw-bold mb-3">${{ gemstone.price }}</h5>
+                        <a href="{% url 'gemstone_detail' gemstone.slug %}"
+                            class="btn btn-outline-gold rounded-pill px-4">View Details</a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center">
+                <p class="text-muted">No featured gemstones available at the moment.</p>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="text-center mt-5">
+            <a href="{% url 'gemstone_list' %}" class="btn btn-gold btn-lg rounded-pill px-5">View All Gemstones</a>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-5 bg-dark text-white text-center">
+    <div class="container">
+        <h2 class="fw-bold mb-3">Find Your Perfect Gemstone Today</h2>
+        <p class="lead mb-4 text-white-50">Can't find what you're looking for? Let our experts help you.</p>
+        <a href="{% url 'contact' %}" class="btn btn-gold btn-lg rounded-pill px-5">Contact Us</a>
+    </div>
+</section>
+{% endblock %}

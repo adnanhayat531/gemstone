@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5">
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}" class="text-decoration-none text-muted">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'gemstone_list' %}"
+                    class="text-decoration-none text-muted">Collection</a></li>
+            <li class="breadcrumb-item active text-gold" aria-current="page">{{ gemstone.name }}</li>
+        </ol>
+    </nav>
+
+    <div class="row mb-5">
+        <!-- Image Section -->
+        <div class="col-md-6 mb-4 mb-md-0">
+            <div class="card border-0 shadow-sm">
+                {% if gemstone.image %}
+                <img src="{{ gemstone.image.url }}" class="img-fluid rounded" alt="{{ gemstone.name }}">
+                {% else %}
+                <div class="bg-light d-flex align-items-center justify-content-center text-muted rounded"
+                    style="height: 400px;">
+                    No Image Available
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Details Section -->
+        <div class="col-md-6">
+            <h6 class="text-gold text-uppercase letter-spacing-2 mb-2">{{ gemstone.category }}</h6>
+            <h1 class="font-serif fw-bold mb-3">{{ gemstone.name }}</h1>
+            <h2 class="text-gold fw-bold mb-4">${{ gemstone.price }}</h2>
+
+            <p class="lead text-muted mb-4">{{ gemstone.description }}</p>
+
+            <table class="table table-borderless mb-4">
+                <tbody>
+                    <tr>
+                        <th class="ps-0 text-muted" scope="row">Origin:</th>
+                        <td>{{ gemstone.origin }}</td>
+                    </tr>
+                    <tr>
+                        <th class="ps-0 text-muted" scope="row">Carat Weight:</th>
+                        <td>{{ gemstone.carat }}</td>
+                    </tr>
+                    <tr>
+                        <th class="ps-0 text-muted" scope="row">Treatment:</th>
+                        <td>{{ gemstone.treatment|default:"None" }}</td>
+                    </tr>
+                    <tr>
+                        <th class="ps-0 text-muted" scope="row">Certification:</th>
+                        <td>{{ gemstone.certification|default:"Pending" }}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="d-grid gap-2">
+                <button type="button" class="btn btn-success btn-lg rounded-pill" data-bs-toggle="modal"
+                    data-bs-target="#inquiryModal">
+                    <i class="far fa-envelope me-2"></i> Inquire Now
+                </button>
+                <a href="https://wa.me/?text=Hi, I am interested in {{ gemstone.name }} ({{ gemstone.category }}) priced at ${{ gemstone.price }}."
+                    target="_blank" class="btn btn-outline-success btn-lg rounded-pill">
+                    <i class="fab fa-whatsapp me-2"></i> Chat on WhatsApp
+                </a>
+            </div>
+
+            <hr class="my-4 text-muted">
+            <div class="small text-muted">
+                <i class="fa fa-check-circle text-gold me-2"></i> Authenticity Guaranteed <br>
+                <i class="fa fa-shipping-fast text-gold me-2"></i> Free Insured Shipping
+            </div>
+        </div>
+    </div>
+
+    <!-- Related Gems -->
+    {% if related_gemstones %}
+    <div class="py-5">
+        <h3 class="font-serif fw-bold mb-4">You May Also Like</h3>
+        <div class="row">
+            {% for related in related_gemstones %}
+            <div class="col-md-4 mb-4">
+                <div class="card card-gemstone h-100 shadow-sm">
+                    <div class="card-img-top-wrapper">
+                        {% if related.image %}
+                        <img src="{{ related.image.url }}" class="card-img-top" alt="{{ related.name }}">
+                        {% else %}
+                        <div class="bg-light d-flex align-items-center justify-content-center h-100 text-muted">No Image
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="card-body text-center">
+                        <h5 class="card-title font-serif">{{ related.name }}</h5>
+                        <p class="text-muted small">{{ related.category }}</p>
+                        <h6 class="text-gold fw-bold">${{ related.price }}</h6>
+                        <a href="{% url 'gemstone_detail' related.slug %}"
+                            class="btn btn-sm btn-outline-gold mt-2">View</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+
+<!-- Inquiry Modal -->
+<div class="modal fade" id="inquiryModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h5 class="modal-title fw-bold font-serif">Inquire about {{ gemstone.name }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="text-muted small mb-4">Fill out the form below and our team will get back to you shortly
+                    regarding this {{ gemstone.category }}.</p>
+                <form action="{% url 'inquire_gemstone' gemstone.id %}" method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Name</label>
+                        <input type="text" name="name" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Email</label>
+                        <input type="email" name="email" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Phone (Optional)</label>
+                        <input type="tel" name="phone" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Message</label>
+                        <textarea name="message" class="form-control" rows="3"
+                            required>I am interested in the {{ gemstone.name }} listed for ${{ gemstone.price }}. Please provide more details.</textarea>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-gold">Send Inquiry</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
